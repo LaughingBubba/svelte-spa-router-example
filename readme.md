@@ -22,4 +22,4 @@ If you happen to have serve installed globally:
 ```
 serve ./public
 ```
-This demonstrates the problem a little better as when you navigate to [http://localhost:5000/should-be-router404] you fall through to serve's own 404. 
+This demonstrates the problem a little better as when you navigate to http://localhost:5000/should-be-router404 you fall through to serve's own 404. 
