@@ -18,7 +18,7 @@ Then navigate to http://localhost:5000/ and type `should-be-router404` at the en
 If you go to http://localhost:5000/#/should-be-router404 you'll get routed to the `<NotFound/>` component as expected.
 
 ### Run using serve
-If you happen to have serve installed glabally:
+If you happen to have serve installed globally:
 ```
 serve ./public
 ```
