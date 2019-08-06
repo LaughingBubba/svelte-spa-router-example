@@ -1,33 +1,15 @@
-<h1>svelte-spa-router example</h1>
-<!-- Navigation links, using the "link" action -->
-<!-- Also, use the "active" action to add the "active" CSS class when the URL matches -->
-<ul class="navigation-links">
-    <li><a href="/" use:link use:active>Home</a></li>
-    <li><a href="/brand" use:link><b>Brand</b></a></li>
-    <li><a href="/hello/svelte" use:link use:active={'/hello/*', 'active'}>Say hi!</a></li>
-    <li><a href="/does/not/exist" use:link>Not found</a></li>
-</ul>
+<script>
 
-<!-- Navigate with buttons -->
-<p class="navigation-buttons">
-    <button on:click={() => push('/wild/something')}>Visit /wild/something</button>
-    <button on:click={() => pop()}>Go back</button>
-    <button on:click={() => replace('/wild/replaced')}>Replace current page</button>
-</p>
+import { Router, Route, navigateTo } from 'svero'
 
-<!-- Query string -->
-<a href="/hello/svelte?quantity=100" use:link use:active={'/hello/*'}>Querystring args</a>
+import Home from './routes/Home.svelte'
+import Name from './routes/Name.svelte'
+import Wild from './routes/Wild.svelte'
+import Regex from './routes/Regex.svelte'
+import About from './routes/About.svelte'
+import NotFound from './routes/NotFound.svelte'
 
-<!-- Show the current path -->
-<p>
-    Current path: <code id="currentpath">{$location}</code>
-    <br/>
-    Querystring: <code id="currentqs">{$querystring}</code>
-</p>
-
-<!-- Show the router -->
-<Router {routes}/>
-
+</script>
 <style>
 /* Style for "active" links; need to mark this :global because the router adds the class directly */
 :global(a.active) {
@@ -35,17 +17,33 @@
 }
 </style>
 
-<script>
-// Import the router component
-// Normally, this would be import: `import Router from 'svelte-spa-router'`
-import Router from 'svelte-spa-router'
-// Import the "link" action and the methods to control history programmatically from the same module, as well as the location store
-import {link, push, pop, replace, location, querystring} from 'svelte-spa-router'
 
-// Import the "active" action
-// Normally, this would be import: `import active from 'svelte-spa-router/active'`
-import active from 'svelte-spa-router/active'
+<h1>svelte-spa-router example</h1>
+<!-- Navigation links, using the "link" action -->
+<!-- Also, use the "active" action to add the "active" CSS class when the URL matches -->
+<ul class="navigation-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/about"><b>About</b></a></li>
+    <li><a href="/hello/svelte/joe">Say hi!</a></li>
+    <li><a href="/does/not/exist">Not found</a></li>
+</ul>
 
-// Import the list of routes
-import routes from './routes'
-</script>
+<!-- Navigate with buttons -->
+<p class="navigation-buttons">
+    <button on:click={() => navigateTo('/wild/something')}>Visit /wild/something</button>
+    <button on:click={() => window.history.back()}>Go back</button>
+    <button on:click={() => navigateTo('/wild/replaced')}>Replace current page</button>
+</p>
+
+<!-- Show the router -->
+
+<Router>
+    <Route path="*" component={NotFound} />
+    <Route exact path="/" component={Home} />
+    <Route path="/about" component={About} />
+    <Route path="/hello/svelte/:first/:last" component={Name} />
+    <Route path="/about/:who/123/:where" component={Name} />
+    <Route path="/static">
+        <h1>It works!</h1>
+    </Route>
+</Router>
